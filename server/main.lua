@@ -272,6 +272,25 @@ local function HandleAddCreditCommand(source, args, rawCommand)
     if not player then 
         return 
     end
+
+    local playerJob = player.PlayerData.job
+    local jobName = playerJob and playerJob.name
+    if not HasBankerJob(jobName) then
+        if lib then
+            lib.notify(source, {
+                title = 'Access Denied',
+                description = 'You must be a banker to use this command. Your job: ' .. (jobName or 'none'),
+                type = 'error'
+            })
+        else
+            TriggerClientEvent('chat:addMessage', source, {
+                color = {255, 0, 0},
+                multiline = true,
+                args = {'System', 'You must be a banker to use this command.'}
+            })
+        end
+        return
+    end
     
     local citizenid = nil
     local amount = nil
@@ -336,6 +355,25 @@ local function HandleReduceCreditCommand(source, args, rawCommand)
     local player = GetPlayer(source)
     if not player then 
         return 
+    end
+
+    local playerJob = player.PlayerData.job
+    local jobName = playerJob and playerJob.name
+    if not HasBankerJob(jobName) then
+        if lib then
+            lib.notify(source, {
+                title = 'Access Denied',
+                description = 'You must be a banker to use this command. Your job: ' .. (jobName or 'none'),
+                type = 'error'
+            })
+        else
+            TriggerClientEvent('chat:addMessage', source, {
+                color = {255, 0, 0},
+                multiline = true,
+                args = {'System', 'You must be a banker to use this command.'}
+            })
+        end
+        return
     end
     
     local citizenid = nil
